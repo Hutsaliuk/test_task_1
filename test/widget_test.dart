@@ -7,24 +7,55 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:test_task_1/main.dart';
+import 'package:test_task_1/radio_form_field.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  testWidgets('Radio form field smoke test', (WidgetTester tester) async {
+    const firstElementTitle = 'Woman';
+    const secondIconTile = Icons.man;
+    const errorMessage = "You haven't selected any option!";
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    const radioTiles = [
+      Text(firstElementTitle),
+      Icon(secondIconTile),
+    ];
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
+    String? validator(int? value) {
+      return value == null ? errorMessage : null;
+    }
+
+    final radioFormKey = GlobalKey<FormFieldState>();
+
+    // Build app and trigger a frame.
+    await tester.pumpWidget(MaterialApp(
+      home: RadioFormField(
+        items: radioTiles,
+        validatior: validator,
+        radioFormKey: radioFormKey,
+      ),
+    ));
+
+    // Verify that no error message shown and radio tiles presented.
+    expect(find.text(errorMessage), findsNothing);
+    expect(find.text(firstElementTitle), findsOneWidget);
+    expect(find.byIcon(secondIconTile), findsOneWidget);
+
+    // Validate Radio form field without choosing any tile
+    radioFormKey.currentState?.validate();
     await tester.pump();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Verify that error message shown
+    expect(find.text(errorMessage), findsOneWidget);
+
+    //Tap and choose first radio tile
+    await tester.tap(find.text(firstElementTitle));
+    await tester.pump();
+
+    // Validate Radio form field with choosing first tile
+    radioFormKey.currentState?.validate();
+    await tester.pump();
+
+    // Verify that no error message anymore
+    expect(find.text(errorMessage), findsNothing);
   });
 }

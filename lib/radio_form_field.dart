@@ -22,11 +22,13 @@ class RadioFormField extends StatefulWidget {
     Key? key,
     required this.items,
     required this.validatior,
+    this.radioFormKey,
   })  : assert(items.length > 1),
         super(key: key);
 
   final List<Widget> items;
   final String? Function(int? value) validatior;
+  final GlobalKey<FormFieldState>? radioFormKey;
 
   @override
   State<RadioFormField> createState() => _RadioFormFieldState();
@@ -41,6 +43,7 @@ class _RadioFormFieldState extends State<RadioFormField> {
   @override
   Widget build(BuildContext context) {
     return FormField<int?>(
+      key: widget.radioFormKey,
       validator: widget.validatior,
       builder: (field) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
