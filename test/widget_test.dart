@@ -8,16 +8,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:test_task_1/radio_form_field.dart';
+import 'package:test_task_1/user.dart';
 
 void main() {
   testWidgets('Radio form field smoke test', (WidgetTester tester) async {
-    const firstElementTitle = 'Woman';
-    const secondIconTile = Icons.man;
+    const firstUserName = 'Ivan';
+    const firstUserAge = 25;
+    const secondUserName = 'Petro';
+    const secondUserAge = 32;
+
+    const firstUser = User(firstUserName, firstUserAge);
+    const secondUser = User(secondUserName, secondUserAge);
     const errorMessage = "You haven't selected any option!";
 
     const radioTiles = [
-      Text(firstElementTitle),
-      Icon(secondIconTile),
+      firstUser,
+      secondUser,
     ];
 
     String? validator(int? value) {
@@ -37,8 +43,8 @@ void main() {
 
     // Verify that no error message shown and radio tiles presented.
     expect(find.text(errorMessage), findsNothing);
-    expect(find.text(firstElementTitle), findsOneWidget);
-    expect(find.byIcon(secondIconTile), findsOneWidget);
+    expect(find.textContaining(firstUserName), findsOneWidget);
+    expect(find.textContaining(secondUserName), findsOneWidget);
 
     // Validate Radio form field without choosing any tile
     radioFormKey.currentState?.validate();
@@ -48,7 +54,7 @@ void main() {
     expect(find.text(errorMessage), findsOneWidget);
 
     //Tap and choose first radio tile
-    await tester.tap(find.text(firstElementTitle));
+    await tester.tap(find.textContaining(firstUserName));
     await tester.pump();
 
     // Validate Radio form field with choosing first tile

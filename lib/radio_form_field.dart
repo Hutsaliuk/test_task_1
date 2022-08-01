@@ -26,7 +26,7 @@ class RadioFormField extends StatefulWidget {
   })  : assert(items.length > 1),
         super(key: key);
 
-  final List<Widget> items;
+  final List<Object> items;
   final String? Function(int? value) validatior;
   final GlobalKey<FormFieldState>? radioFormKey;
 
@@ -59,7 +59,7 @@ class _RadioFormFieldState extends State<RadioFormField> {
               child: ListTile(
                 title: Align(
                   alignment: Alignment.centerLeft,
-                  child: widget.items[index],
+                  child: Text(widget.items[index].toString()),
                 ),
                 trailing: Radio<int>(
                   splashRadius: _radioSplashRadius,

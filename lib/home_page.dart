@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_task_1/radio_form_field.dart';
+import 'package:test_task_1/user.dart';
 
 ///Home Page of the application
 class HomePage extends StatelessWidget {
@@ -9,6 +10,12 @@ class HomePage extends StatelessWidget {
 
   final _snackBar =
       const SnackBar(content: Text("Validation successfully. Submitting..."));
+
+  final users = const [
+    User('Ivan', 24),
+    User('Petro', 32),
+    User('Viktor', 43),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +29,7 @@ class HomePage extends StatelessWidget {
             children: [
               //Here is the new Radio widget that allows validation
               RadioFormField(
-                items: const [
-                  Text('Woman'),
-                  Text('Man'),
-                  Icon(Icons.woman),
-                  Icon(Icons.man)
-                ],
+                items: users,
                 validatior: (value) =>
                     value == null ? "You haven't selected any option!" : null,
               ),
